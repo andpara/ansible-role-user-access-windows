@@ -50,3 +50,25 @@
     state: present
     enabled: yes
   when: user_access_rdp
+
+- name: Enable Password Authentication in sshd_config
+  win_lineinfile:
+    path: 'C:\ProgramData\ssh\sshd_config'
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication yes'
+  when: user_access_password is defined and user_access_password
+  notify: restart win sshd
+
+- name: Keep TLS but Disable NLA (Fix TLS connection failure caused by untrusted certificate)
+  win_regedit:
+    path: '{{ item.path }}'
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
+    type: dword
+  loop:
+    - { path: 'HKLM:\System\CurrentControlSet\Control\Terminal Server', name: 'fDenyTSConnections', data: 0 }
+    - { path: 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp', name: 'UserAuthentication', data: 0 }
+    - { path: 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp', name: 'SecurityLayer', data: 0 }
+  when: user_access_rdp
+  notify: restart win rdp
+
