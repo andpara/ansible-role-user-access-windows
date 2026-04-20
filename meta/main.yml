@@ -1,0 +1,11 @@
+galaxy_info:
+    role_name: user-access-windows
+    author: Kamil Andoniadis and CyberSecurity Hub (primary), andpara (contributor)
+    description: Distribution of user SSH public key to authorized keys. Updated by andpara with minor fixes for SSH and RDP.
+    company: Masaryk University and CyberSecurity Hub, z.s. (original)
+    licence: MIT
+    min_ansible_version: '2.14'
+    platforms:
+        - name: Windows
+          versions:
+              - all
