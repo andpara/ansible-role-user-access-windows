@@ -1,0 +1,10 @@
+- name: restart win sshd
+  win_service:
+    name: sshd
+    state: restarted
+
+- name: restart win rdp
+  win_service:
+    name: TermService
+    state: restarted
+    force: yes
